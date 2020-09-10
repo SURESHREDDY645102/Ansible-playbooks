@@ -1,0 +1,29 @@
+---
+- hosts: webserver
+  become: yes
+  tasks:
+  - name: Fail message
+    fail:
+      msg: "This script is developed to run only on RedHat"
+  - name: Installing httpd
+    yum:
+      name: httpd
+      update_cache: yes
+      state: present
+  - name: starting the service
+    service:
+      name: https
+      enabled: yes
+      state: started
+  - name: installing php modules
+    yum:
+      name: "{{ item }}"
+      state: present
+    loop:
+    - php
+    - php-mysql 
+    - php-pdo 
+    - php-gd 
+    - php-mbstring
+
+# Documented from https://www.tecmint.com/install-lamp-in-centos-7/
